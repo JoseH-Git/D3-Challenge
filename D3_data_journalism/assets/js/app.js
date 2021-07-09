@@ -76,7 +76,8 @@ d3.csv("assets/data/data.csv").then(function(data) {
   .attr("r", "10")
   .attr("fill", "red ")
   .attr("stroke-width", ".5")
-  .attr("stroke", "blue");
+  .attr("stroke", "blue")
+  .style("fill", "#69b3a2");
 
     
   // // Append an SVG path and plot its points using the line function
@@ -96,6 +97,35 @@ d3.csv("assets/data/data.csv").then(function(data) {
     .classed("axis", true)
     .attr("transform", "translate(0, " + chartHeight + ")")
     .call(bottomAxis);
-}).catch(function(error) {
-  console.log(error);
+  
+  // Initialize tooltip
+  var toolTip = d3.tip() 
+  .attr("class", "tooltip")
+  .offset([80, -60])
+  .html(function(d) {
+    return  `${d.state}<br>Smoke: ${d.smokes}<br>Age: ${d.age}<br>`; 
+  });
+
+  // Create tooltip in the chart
+  chartGroup.call(toolTip);
+
+  // Create event listeners to display and hide the tooltip
+  circlesGroup.on("mouseover", function(data) {
+  toolTip.show(data, this);
+  })
+  // onmouseout event
+  .on("mouseout", function(data, index) {
+    toolTip.hide(data);
+  });
+
+  }).catch(function(error) {
+    console.log(error);
 });
+
+// When the browser loads, makeResponsive() is called.
+makeResponsive();
+
+// When the browser window is resized, makeResponsive() is called.
+d3.select(window).on("resize", makeResponsive);
+  
+
