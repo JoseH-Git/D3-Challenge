@@ -53,7 +53,6 @@ function makeResponsive() {
       data.obesity = +data.obesity;
       data.healthcare = +data.healthcare;
       data.poverty= +data.poverty;
-      
       // console.log(data.age);
       // console.log(data.smokes);
     });
@@ -69,7 +68,7 @@ function makeResponsive() {
     // Set the domain for the xLinearScale function
     var yLinearScale = d3.scaleLinear()
       .range([chartHeight, 0])
-      .domain([0, d3.max(data, data => data.smokes)]);
+      .domain([6, d3.max(data, data => data.smokes)]);
 
     // Create two new functions passing the scales in as arguments
     // These will be used to create the chart's axes
@@ -95,22 +94,20 @@ function makeResponsive() {
     .attr("stroke", "blue")
     .style("fill", "#69b3a2")
     .attr("fill", "rgb(117, 145, 197)")
-    // .text(data.abbr) 
     .attr("opacity", "0.5");
 
     // // Add state labels to the points
     // var circleLabels = chartGroup.data(data).enter();
-
     // circleLabels.append("text")
-    // .attr("x", function(d) { return d.smokes; })
-    // .attr("y", function(d) { return d.age; })
+    // .attr("dx", function(d) { return d.smokes; })
+    // .attr("dy", function(d) { return d.age; })
     // .text(function(d) { return d.abbr; })
     // .attr("font-family", "sans-serif")
     // .attr("font-size", "100px")
     // // .attr("fill", "white");
     
     // WHAT I ADDED; I USED THE CODE ABOVE FOR THE CIRCLES, BUT CHANGED IT FOR TEXT
-    // LINE 106 AND 107, "dx" and "dy" ARE VERY IMPORTANT
+    // Lines"dx" and "dy" ARE VERY IMPORTANT
     var textGroup = chartGroup.selectAll("text")
     .data(data)
     .enter()
@@ -118,7 +115,7 @@ function makeResponsive() {
     .attr("dx", d => xTimeScale(d.age))
     .attr("dy", d => yLinearScale(d.smokes))
     .text(d => d.abbr)
-    .attr("font-family", "sans-serif")
+    .attr("font-family", "arial")
     .attr("font-size", "10px")
     .attr("fill", "black")
     .attr("text-anchor","middle");
@@ -140,17 +137,47 @@ function makeResponsive() {
     //   .text("Ages (%)");
 
     // Append an SVG group element to the SVG area, create the left axis inside of it
+    // chartGroup.append("g")
+    //   .classed("axis", true)
+    //   .call(leftAxis);
+
+    // // append y axis label
+    chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left+10)
+    .attr("x", 0 - (svgHeight / 2))
+    .attr("dy", "1em")
+    .classed("axis-text", true)
+    .attr("font-weight", 500)  // Bold
+    .text("Smokes (%)");
+
+    // append y axis
     chartGroup.append("g")
-      .classed("axis", true)
-      .call(leftAxis);
+    .call(leftAxis);
 
     // Append an SVG group element to the SVG area, create the bottom axis inside of it
     // Translate the bottom axis to the bottom of the page
-    chartGroup.append("g")
-      .classed("axis", true)
-      .attr("transform", "translate(0, " + chartHeight + ")")
-      .call(bottomAxis);
+    // chartGroup.append("g")
+    //   .classed("axis", true)
+    //   .attr("transform", "translate(0, " + chartHeight + ")")
+    //   .call(bottomAxis);
     
+    chartGroup.append("text")
+    // .attr("transform", `translate(${svgWidth / 2}, ${svgHeight + 20})`)
+    .attr("y", chartHeight+40)
+    .attr("x", chartWidth/2.2)
+    .attr("dx", "1em")
+    .classed("axis-text", true)
+    .attr("font-weight", 500)  //Bold
+    .style("text-anchor", "middle")
+    .text("Age Median");
+
+    // append x axis
+    var xAxis = chartGroup.append("g")
+    .classed("x-axis", true)
+    . attr("transform", `translate(0, ${chartHeight})`)
+    .call(bottomAxis);
+
     // Initialize tooltip
     var toolTip = d3.tip() 
     .attr("class", "tooltip")
