@@ -120,7 +120,8 @@ function makeResponsive() {
     .text(d => d.abbr)
     .attr("font-family", "sans-serif")
     .attr("font-size", "10px")
-    .attr("fill", "black");
+    .attr("fill", "black")
+    .attr("text-anchor","middle");
 
     // // Create axes labels
     // chartGroup.append("text")
