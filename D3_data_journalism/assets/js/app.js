@@ -89,7 +89,7 @@ function makeResponsive() {
     .append("circle")
     .attr("cx", d => xTimeScale(d.age))
     .attr("cy", d => yLinearScale(d.smokes))
-    .attr("r", "10")
+    .attr("r", "15")
     .attr("fill", "red ")
     .attr("stroke-width", ".5")
     .attr("stroke", "blue")
@@ -98,17 +98,30 @@ function makeResponsive() {
     // .text(data.abbr) 
     .attr("opacity", "0.5");
 
-    // Add state labels to the points
-    var circleLabels = chartGroup.data(data).enter();
+    // // Add state labels to the points
+    // var circleLabels = chartGroup.data(data).enter();
 
-    circleLabels.append("text")
-    .attr("x", function(d) { return d.smokes; })
-    .attr("y", function(d) { return d.age; })
-    .text(function(d) { return d.abbr; })
-    .attr("font-family", "sans-serif")
-    .attr("font-size", "100px")
-    // .attr("fill", "white");
+    // circleLabels.append("text")
+    // .attr("x", function(d) { return d.smokes; })
+    // .attr("y", function(d) { return d.age; })
+    // .text(function(d) { return d.abbr; })
+    // .attr("font-family", "sans-serif")
+    // .attr("font-size", "100px")
+    // // .attr("fill", "white");
     
+    // WHAT I ADDED; I USED THE CODE ABOVE FOR THE CIRCLES, BUT CHANGED IT FOR TEXT
+    // LINE 106 AND 107, "dx" and "dy" ARE VERY IMPORTANT
+    var textGroup = chartGroup.selectAll("text")
+    .data(data)
+    .enter()
+    .append("text")
+    .attr("dx", d => xTimeScale(d.age))
+    .attr("dy", d => yLinearScale(d.smokes))
+    .text(d => d.abbr)
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "10px")
+    .attr("fill", "black");
+
     // // Create axes labels
     // chartGroup.append("text")
     // .attr("transform", "rotate(-90)")
